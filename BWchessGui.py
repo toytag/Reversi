@@ -37,6 +37,7 @@ class BWchessEnv(tk.Tk):
                     self.canvas.create_oval(j * 50 + 5, i * 50 + 5, \
                                             j * 50 + 45, i * 50 + 45, \
                                             fill='black' if self.chess.chess_board[i, j] == 1 else 'white')
+
         self.update()
 
     def __scheduler(self, event):
