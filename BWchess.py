@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class BWchess():
+class BWchess:
     player_black = 1
     player_white = -1
 
