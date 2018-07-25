@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class BWchess():
     player_black = 1
     player_white = -1
@@ -11,21 +12,19 @@ class BWchess():
         self.round_counter = 0
 
     def put_chess(self, x, y, identity):
-        if self.chess_board[x, y] == 0:
+        print(x, y, identity)
+        if self.chess_board[x, y] == 0 and \
+           self.flip(x, y, identity, check=True):
             self.chess_board[x, y] = identity
-
-            # put check
-            condition = self.reverse_chess(x, y, identity)
-            if condition:
-                return True
-            else:
-                self.chess_board[x, y] = 0
-                return False
-                
+            self.flip(x, y, identity, check=False)
+            return True
         else:
             return False
 
-    def reverse_chess(self, x, y, identity):
+    def flip(self, x, y, identity, check=False):
+        # if check is on return True or False and don't change chess_board
+        # if check is off flip the chess and return None
+
         # get related lines
         S = self.chess_board[:, y]
         H = self.chess_board[x, :]
@@ -35,10 +34,11 @@ class BWchess():
         condition = False
 
         # reverse the chess
-        for line in [S[:x][::-1], S[x+1:], H[:y][::-1], H[y+1:], \
-                     X[:min(x, y)][::-1], X[min(x, y)+1:], \
-                     F[:min(x, 7-y)][::-1], F[min(x, 7-y)+1:]]:
-
+        for line in [
+            S[:x][::-1], S[x+1:], H[:y][::-1], H[y+1:],
+            X[:min(x, y)][::-1], X[min(x, y)+1:],
+            F[:min(x, 7-y)][::-1], F[min(x, 7-y)+1:]
+        ]:
             # make np.array writeable when represented as line
             line.flags.writeable = True
 
@@ -48,14 +48,46 @@ class BWchess():
                 elif chess == identity:
                     if i == 0:
                         break
-                    line[:i] = identity
+                    if check == False:
+                        line[:i] = identity
                     condition = True
                     break
 
-        return condition
+        if check == True:
+            return condition
 
-    def check_winner(self):
-        pass
+    def check_status(self):
+        black_count = 0
+        white_count = 0
+        black_available = 0
+        white_available = 0
+
+        for i in range(8):
+            for j in range(8):
+                if self.chess_board[i, j] == self.player_black:
+                    black_count += 1
+                elif self.chess_board[i, j] == self.player_white:
+                    white_count += 1
+                else:
+                    if self.flip(i, j, self.player_black, check=True):
+                        black_available += 1
+                    if self.flip(i, j, self.player_white, check=True):
+                        white_available += 1
+
+        if black_available == 0 and white_available == 0:
+            if black_count > white_count:
+                return f'Black Win\n\n{black_count} : {white_count}'
+            elif black_count < white_count:
+                return f'White Win\n\n{black_count} : {white_count}'
+            else:
+                return 'Tie'
+        elif black_available == 0:
+            return 'black skip'
+        elif white_available == 0:
+            return 'white skip'
+        else:
+            return 'normal'
+
 
 if __name__ == "__main__":
     BWchess()

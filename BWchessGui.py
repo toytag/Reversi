@@ -1,6 +1,8 @@
 import math
 import tkinter as tk
+from tkinter import messagebox
 from BWchess import BWchess
+
 
 class BWchessEnv(tk.Tk):
     def __init__(self):
@@ -34,9 +36,11 @@ class BWchessEnv(tk.Tk):
         for i in range(8):
             for j in range(8):
                 if self.chess.chess_board[i, j] != 0:
-                    self.canvas.create_oval(j * 50 + 5, i * 50 + 5, \
-                                            j * 50 + 45, i * 50 + 45, \
-                                            fill='black' if self.chess.chess_board[i, j] == 1 else 'white')
+                    self.canvas.create_oval(
+                        j * 50 + 5, i * 50 + 5,
+                        j * 50 + 45, i * 50 + 45,
+                        fill='black' if self.chess.chess_board[i, j] == 1 else 'white'
+                    )
 
         self.update()
 
@@ -44,12 +48,31 @@ class BWchessEnv(tk.Tk):
         # calculate coordinates and id
         x = math.floor(event.y / 50)
         y = math.floor(event.x / 50)
-        identity = 1 if self.chess.round_counter % 2 == 0 else -1
+        identity = self.chess.player_black \
+                   if self.chess.round_counter % 2 == 0 \
+                   else self.chess.player_white
 
         # put chess
         if self.chess.put_chess(x, y, identity):
             self.chess.round_counter += 1
+            status = self.chess.check_status()
             self.__update_board()
+            next_identity = self.chess.player_black \
+                            if self.chess.round_counter % 2 == 0 \
+                            else self.chess.player_white
+            if status == 'black skip' and next_identity == self.chess.player_black:
+                self.chess.round_counter += 1
+            elif status == 'white skip' and next_identity == self.chess.player_white:
+                self.chess.round_counter += 1
+            elif 'Black Win' in status:
+                messagebox.showinfo('Black & White Chess', status)
+                self.destroy()
+            elif 'White Win' in status:
+                messagebox.showinfo('Black & White Chess', status)
+                self.destroy()
+            elif status == 'Tie':
+                messagebox.showinfo('Black & White Chess', status)
+                self.destroy()
         
 
 if __name__ == '__main__':
