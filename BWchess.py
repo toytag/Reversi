@@ -12,7 +12,6 @@ class BWchess:
         self.round_counter = 0
 
     def put_chess(self, x, y, identity):
-        print(x, y, identity)
         if self.chess_board[x, y] == 0 and \
            self.flip(x, y, identity, check=True):
             self.chess_board[x, y] = identity

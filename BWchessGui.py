@@ -22,16 +22,15 @@ class BWchessEnv(tk.Tk):
         self.canvas = tk.Canvas(self, bg='Tan', width=400, height=400)
         self.canvas.pack()
         self.canvas.bind('<Button-1>', self.__scheduler)
-        self.__update_board()
-
-    def __update_board(self):
-        self.canvas.delete('all')
-
         for i in range(50, 400, 50):
             # vertical line
             self.canvas.create_line(i, 0, i, 400)
             # horizontal line
             self.canvas.create_line(0, i, 400, i)
+        self.__update_board()
+
+    def __update_board(self):
+        self.canvas.delete('chess')
 
         for i in range(8):
             for j in range(8):
@@ -39,7 +38,8 @@ class BWchessEnv(tk.Tk):
                     self.canvas.create_oval(
                         j * 50 + 5, i * 50 + 5,
                         j * 50 + 45, i * 50 + 45,
-                        fill='black' if self.chess.chess_board[i, j] == 1 else 'white'
+                        fill='black' if self.chess.chess_board[i, j] == 1 else 'white',
+                        tags='chess',
                     )
 
         self.update()
