@@ -7,15 +7,17 @@ class BWchess:
 
     def __init__(self):
         self.chess_board = np.zeros((8, 8), dtype=np.int8)
+        self.available = np.zeros((8, 8), dtype=np.int8)
         self.chess_board[3, 3], self.chess_board[4, 4] = -1, -1
         self.chess_board[3, 4], self.chess_board[4, 3] = 1, 1
         self.round_counter = 0
+        self.check_status()
 
     def put_chess(self, x, y, identity):
-        if self.chess_board[x, y] == 0 and \
-           self.flip(x, y, identity, check=True):
+        if self.available[x, y] == identity:
             self.chess_board[x, y] = identity
             self.flip(x, y, identity, check=False)
+            self.available = np.zeros((8, 8), dtype=np.int8)
             return True
         else:
             return False
@@ -69,8 +71,10 @@ class BWchess:
                     white_count += 1
                 else:
                     if self.flip(i, j, self.player_black, check=True):
+                        self.available[i, j] = 1
                         black_available += 1
                     if self.flip(i, j, self.player_white, check=True):
+                        self.available[i, j] = -1
                         white_available += 1
 
         if black_available == 0 and white_available == 0:

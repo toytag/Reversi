@@ -30,10 +30,20 @@ class BWchessEnv(tk.Tk):
         self.__update_board()
 
     def __update_board(self):
-        self.canvas.delete('chess')
+        self.canvas.delete('chess', 'avai')
+
+        identity = 1 if self.chess.round_counter % 2 == 0 else -1
 
         for i in range(8):
             for j in range(8):
+                if self.chess.available[i, j] == identity:
+                    self.canvas.create_oval(
+                        j * 50 + 20, i * 50 + 20,
+                        j * 50 + 30, i * 50 + 30,
+                        outline='lightseagreen',
+                        fill='lightseagreen',
+                        tags='avai',
+                    )
                 if self.chess.chess_board[i, j] != 0:
                     self.canvas.create_oval(
                         j * 50 + 5, i * 50 + 5,
@@ -41,7 +51,7 @@ class BWchessEnv(tk.Tk):
                         fill='black' if self.chess.chess_board[i, j] == 1 else 'white',
                         tags='chess',
                     )
-
+                    
         self.update()
 
     def __scheduler(self, event):
