@@ -70,7 +70,6 @@ class BWchessEnv(tk.Tk):
             next_identity = self.chess.player_black \
                             if self.chess.round_counter % 2 == 0 \
                             else self.chess.player_white
-            print(status)
             if status == 'black skip' and next_identity == self.chess.player_black:
                 self.chess.round_counter += 1
             elif status == 'white skip' and next_identity == self.chess.player_white:
