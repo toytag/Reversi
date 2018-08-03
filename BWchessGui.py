@@ -36,7 +36,7 @@ class BWchessEnv(tk.Tk):
 
         for i in range(8):
             for j in range(8):
-                if self.chess.available[i, j] == identity:
+                if self.chess.available[i, j] in [identity, 2]:
                     self.canvas.create_oval(
                         j * 50 + 20, i * 50 + 20,
                         j * 50 + 30, i * 50 + 30,
@@ -70,6 +70,7 @@ class BWchessEnv(tk.Tk):
             next_identity = self.chess.player_black \
                             if self.chess.round_counter % 2 == 0 \
                             else self.chess.player_white
+            print(status)
             if status == 'black skip' and next_identity == self.chess.player_black:
                 self.chess.round_counter += 1
             elif status == 'white skip' and next_identity == self.chess.player_white:
@@ -83,6 +84,7 @@ class BWchessEnv(tk.Tk):
             elif status == 'Tie':
                 messagebox.showinfo('Black & White Chess', status)
                 self.destroy()
+        self.__update_board()
         
 
 if __name__ == '__main__':

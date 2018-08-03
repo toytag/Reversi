@@ -14,7 +14,7 @@ class BWchess:
         self.check_status()
 
     def put_chess(self, x, y, identity):
-        if self.available[x, y] == identity:
+        if self.available[x, y] in [identity, 2]:
             self.chess_board[x, y] = identity
             self.flip(x, y, identity, check=False)
             self.available = np.zeros((8, 8), dtype=np.int8)
@@ -74,7 +74,10 @@ class BWchess:
                         self.available[i, j] = 1
                         black_available += 1
                     if self.flip(i, j, self.player_white, check=True):
-                        self.available[i, j] = -1
+                        if self.available[i, j] == 1:
+                            self.available[i, j] = 2
+                        else:
+                            self.available[i, j] = -1
                         white_available += 1
 
         if black_available == 0 and white_available == 0:
