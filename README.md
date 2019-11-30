@@ -1,3 +1,3 @@
-# Black & White Chess
+# Reversi
 
-Python implementation for Black & White chess game.
+Python GUI implementation for reversi.
