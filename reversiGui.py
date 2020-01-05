@@ -1,13 +1,13 @@
 import math
 import tkinter as tk
 from tkinter import messagebox
-from BWchess import BWchess
+from reversi import reversi
 
 
-class BWchessEnv(tk.Tk):
+class reversiEnv(tk.Tk):
     def __init__(self):
-        # initialize BWchess
-        self.chess = BWchess()
+        # initialize reversi
+        self.chess = reversi()
 
         # initialize tk
         super().__init__()
@@ -87,4 +87,4 @@ class BWchessEnv(tk.Tk):
         
 
 if __name__ == '__main__':
-    BWchessEnv()
+    reversiEnv()

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class BWchess:
+class reversi:
     player_black = 1
     player_white = -1
 
@@ -96,4 +96,4 @@ class BWchess:
 
 
 if __name__ == "__main__":
-    BWchess()
+    reversi()
