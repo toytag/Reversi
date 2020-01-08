@@ -11,7 +11,7 @@ class reversiEnv(tk.Tk):
 
         # initialize tk
         super().__init__()
-        self.title('Black & White Chess')
+        self.title('Reversi')
         self.geometry('400x400')
         self.__setup_canvas()
 
