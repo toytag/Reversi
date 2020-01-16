@@ -10,9 +10,9 @@ class reversi:
     def __init__(self):
         # initialization
         self.chess_board = np.zeros((8, 8), dtype=np.int8)
-        self.available = np.zeros((8, 8), dtype=np.int8)
-        self.black_count, self.black_available_count = 0, 0
-        self.white_count, self.white_available_count = 0, 0
+        self.avl_board = np.zeros((8, 8), dtype=np.int8)
+        self.black_count, self.black_avl_count = 0, 0
+        self.white_count, self.white_avl_count = 0, 0
         self.round_count = 0
         # initial status for the game
         self.chess_board[3, 3], self.chess_board[4, 4] = reversi.WHITE, reversi.WHITE
@@ -23,14 +23,14 @@ class reversi:
     def put_chess(self, x, y, player):
         # check if player has available position
         avai_count = {
-            reversi.BLACK: self.black_available_count,
-            reversi.WHITE: self.white_available_count,
+            reversi.BLACK: self.black_avl_count,
+            reversi.WHITE: self.white_avl_count,
         }.get(player)
         if avai_count == 0:
             self.round_count += 1
             return True
         # check if x, y is one of the available position
-        if self.available[x, y] in [player, reversi.BOTH]:
+        if self.avl_board[x, y] in [player, reversi.BOTH]:
             self.chess_board[x, y] = player
             self.flip(x, y, player)
             self.round_count += 1
@@ -72,9 +72,9 @@ class reversi:
 
     def check_status(self):
         # reset
-        self.available = np.zeros((8, 8), dtype=np.int8)
-        self.black_count, self.black_available_count = 0, 0
-        self.white_count, self.white_available_count = 0, 0
+        self.avl_board = np.zeros((8, 8), dtype=np.int8)
+        self.black_count, self.black_avl_count = 0, 0
+        self.white_count, self.white_avl_count = 0, 0
 
         # use convolution to determine whether one position should be checked
         check_board = convolve2d(self.chess_board, np.ones((3, 3)), mode='same')
@@ -85,9 +85,9 @@ class reversi:
                 self.white_count += 1
             else:
                 if self.flip(i, j, reversi.BLACK, check=True):
-                    self.available[i, j] = reversi.BLACK
-                    self.black_available_count += 1
+                    self.avl_board[i, j] = reversi.BLACK
+                    self.black_avl_count += 1
                 if self.flip(i, j, reversi.WHITE, check=True):
-                    self.available[i, j] = reversi.WHITE \
-                        if self.available[i, j] == 0 else reversi.BOTH
-                    self.white_available_count += 1
+                    self.avl_board[i, j] = reversi.WHITE \
+                        if self.avl_board[i, j] == 0 else reversi.BOTH
+                    self.white_avl_count += 1

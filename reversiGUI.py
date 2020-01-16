@@ -37,7 +37,7 @@ class reversiGUI(tk.Tk):
 
         for i in range(8):
             for j in range(8):
-                if self.chess.available[i, j] in [player, reversi.BOTH]:
+                if self.chess.avl_board[i, j] in [player, reversi.BOTH]:
                     self.canvas.create_oval(
                         j * 50 + 20, i * 50 + 20,
                         j * 50 + 30, i * 50 + 30,
@@ -71,7 +71,8 @@ class reversiGUI(tk.Tk):
             self.__update_board()
 
             # for GUI, now moved to reversiGui.py
-            if self.chess.black_available_count == 0 and self.chess.white_available_count == 0:
+            # Game end
+            if self.chess.black_avl_count == 0 and self.chess.white_avl_count == 0:
                 if self.chess.black_count > self.chess.white_count:
                     messagebox.showinfo('Reversi',
                         f'Black Win\n\n{self.chess.black_count} : {self.chess.white_count}')
