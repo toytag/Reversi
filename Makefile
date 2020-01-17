@@ -1,6 +1,6 @@
 CC=gcc
 STD=-std=c99
-CFLAGS=-fopenmp -march=native -Ofast
+CFLAGS=-fopenmp -march=native -Ofast -Wpedantic -Wall -Wextra -Werror
 
 all: libreversi.so test
 
