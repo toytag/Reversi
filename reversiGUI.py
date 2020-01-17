@@ -1,7 +1,7 @@
-import math
 import tkinter as tk
 from tkinter import messagebox
 from reversi import reversi
+from math import floor
 
 
 class reversiGUI(tk.Tk):
@@ -30,29 +30,32 @@ class reversiGUI(tk.Tk):
         self.__update_board()
 
     def __update_board(self):
-        self.canvas.delete('chess', 'avai')
+        self.canvas.delete('chess', 'avl')
 
         player = reversi.BLACK \
             if self.chess.round_count % 2 == 0 else reversi.WHITE
 
         for i in range(8):
             for j in range(8):
-                if self.chess.avl_board[i, j] in [player, reversi.BOTH]:
+                # important !!!
+                # if the board doesn't show any available position,
+                # it means that you don't have an available position to put chess,
+                # continue to next round by clicking anywhere on the chess board
+                if self.chess.avl_board[i][j] in [player, reversi.BOTH]:
                     self.canvas.create_oval(
                         j * 50 + 20, i * 50 + 20,
                         j * 50 + 30, i * 50 + 30,
                         outline='cyan',
                         fill='cyan',
-                        tags='avai',
+                        tags='avl',
                     )
-                if self.chess.chess_board[i, j] != 0:
+                if self.chess.chess_board[i][j] != 0:
                     self.canvas.create_oval(
                         j * 50 + 5, i * 50 + 5,
                         j * 50 + 45, i * 50 + 45,
-                        fill={
-                            reversi.BLACK: 'black',
-                            reversi.WHITE: 'white',
-                        }.get(self.chess.chess_board[i, j]),
+                        fill='black' \
+                            if self.chess.chess_board[i][j] == reversi.BLACK \
+                            else 'white',
                         tags='chess',
                     )
                     
@@ -60,19 +63,38 @@ class reversiGUI(tk.Tk):
 
     def __scheduler(self, event):
         # calculate coordinates and player
-        x = math.floor(event.y / 50)
-        y = math.floor(event.x / 50)
-        player = reversi.BLACK \
-            if self.chess.round_count % 2 == 0 else reversi.WHITE
+        x = floor(event.y / 50)
+        y = floor(event.x / 50)
 
         # put chess
-        if self.chess.put_chess(x, y, player):
+        if self.chess.put_chess(x, y, reversi.BLACK):
             self.chess.check_status()
             self.__update_board()
 
             # for GUI, now moved to reversiGui.py
-            # Game end
-            if self.chess.black_avl_count == 0 and self.chess.white_avl_count == 0:
+            # game over
+            if self.chess.is_end():
+                if self.chess.black_count > self.chess.white_count:
+                    messagebox.showinfo('Reversi',
+                        f'Black Win\n\n{self.chess.black_count} : {self.chess.white_count}')
+                elif self.chess.black_count < self.chess.white_count:
+                    messagebox.showinfo('Reversi',
+                        f'White Win\n\n{self.chess.black_count} : {self.chess.white_count}')
+                else:
+                    messagebox.showinfo('Reversi', 'Tie')
+                self.destroy()
+                exit()
+
+            # bug !!!!!!!!!!!
+            move = self.chess.minimax(depth=7, player=reversi.WHITE)
+
+            self.chess.put_chess(*move, reversi.WHITE)
+            self.chess.check_status()
+            self.__update_board()
+
+            # for GUI, now moved to reversiGui.py
+            # game over
+            if self.chess.is_end():
                 if self.chess.black_count > self.chess.white_count:
                     messagebox.showinfo('Reversi',
                         f'Black Win\n\n{self.chess.black_count} : {self.chess.white_count}')
