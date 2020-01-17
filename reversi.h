@@ -5,7 +5,7 @@
 #include <stdbool.h>
 // --------------------
 // --- uint8_t type ---
-typedef unsigned char uint8_t
+typedef unsigned char uint8_t;
 // --------------------
 
 // --- constant ---
