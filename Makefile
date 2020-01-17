@@ -1,4 +1,4 @@
-CC=gcc-7
+CC=gcc
 STD=-std=c99
 CFLAGS=-fopenmp -march=native -Ofast -Wpedantic -Wall -Wextra -Werror
 
