@@ -1,11 +1,11 @@
 #ifndef REVERSI_H
 #define REVERSI_H
 
-// --- uint8_t type ---
-#include <stdlib.h>
-// --------------------
 // --- boolean type ---
 #include <stdbool.h>
+// --------------------
+// --- uint8_t type ---
+typedef unsigned char uint8_t
 // --------------------
 
 // --- constant ---
