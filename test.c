@@ -53,6 +53,7 @@ int main() {
     }
 
     inspect(env);
+    
     assert((env.black_count+env.white_count-4+skip_count) == env.round_count);
     printf("test success!\n");
 
