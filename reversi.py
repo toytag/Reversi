@@ -1,6 +1,8 @@
-from ctypes import CDLL, Structure, c_uint8, c_float, byref
+from ctypes import CDLL, Structure, c_uint8, c_float, c_bool, byref
 
 _libreversi = CDLL("./libreversi.so")
+_libreversi.put_chess.restype = c_bool
+_libreversi.is_end.restype = c_bool
 
 class REVERSI(Structure):
     _fields_ = [
