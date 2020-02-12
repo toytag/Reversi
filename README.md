@@ -6,8 +6,8 @@ Minimax agent built-in for a quick "human vs. machine" game!
 ## Usage
 
 ```
-make libreversi.so
 python3 reversiGUI.py
 ```
 
+Use `make` to compile from source.  
 Use `make test` to do build test.
