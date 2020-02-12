@@ -1,6 +1,16 @@
+import platform
 from ctypes import CDLL, Structure, c_uint8, c_float, c_bool, byref
 
-_libreversi = CDLL("./libreversi.so")
+if platform.system() == 'Linux':
+    _libreversi = CDLL("./lib/libreversi.so")
+elif platform.system() == 'Darwin':
+    _libreversi = CDLL("./lib/libreversi.dylib")
+elif platform.system() == 'Windows':
+    _libreversi = CDLL("./lib/libreversi.dll")
+else:
+    print('please compile from source')
+    exit(0)
+
 _libreversi.put_chess.restype = c_bool
 _libreversi.is_end.restype = c_bool
 
